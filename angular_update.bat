@@ -19,7 +19,7 @@ echo.
 echo Update Angularu...
 
 echo.
-cmd /c ng update @angular/cli
+cmd /c npm update --global @angular/cli
 echo.
 
 cd ..\..\..\
