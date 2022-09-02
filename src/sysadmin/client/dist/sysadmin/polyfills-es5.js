@@ -9,7 +9,7 @@
 
   function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-  function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+  function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
   (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["polyfills-es5"], {
     /***/
@@ -499,7 +499,7 @@
     /***/
     function _(module, exports, __webpack_require__) {
       __webpack_require__(
-      /*! C:\Users\senkyr\OneDrive - Střední průmyslová škola, Trutnov, Školní 101\Archive\SPS\projekty\2019-20\2019p2\trida-4ep\projekt-4ep\src\sysadmin\client\node_modules\@angular-devkit\build-angular\src\webpack\es5-polyfills.js */
+      /*! C:\Users\senkyr\OneDrive - Střední průmyslová škola, Trutnov, Školní 101\Source\projekty\verejne\knihovna\src\sysadmin\client\node_modules\@angular-devkit\build-angular\src\webpack\es5-polyfills.js */
       "voQr");
 
       __webpack_require__(
@@ -507,7 +507,7 @@
       "R0gw");
 
       module.exports = __webpack_require__(
-      /*! C:\Users\senkyr\OneDrive - Střední průmyslová škola, Trutnov, Školní 101\Archive\SPS\projekty\2019-20\2019p2\trida-4ep\projekt-4ep\src\sysadmin\client\src\polyfills.ts */
+      /*! C:\Users\senkyr\OneDrive - Střední průmyslová škola, Trutnov, Školní 101\Source\projekty\verejne\knihovna\src\sysadmin\client\src\polyfills.ts */
       "hN/g");
       /***/
     },
@@ -3051,9 +3051,7 @@
             };
         }
 
-        return function ()
-        /* ...args */
-        {
+        return function () {
           return fn.apply(that, arguments);
         };
       };
@@ -3198,9 +3196,7 @@
         target: 'Array',
         proto: true
       }, {
-        flat: function flat()
-        /* depthArg = 1 */
-        {
+        flat: function flat() {
           var depthArg = arguments.length ? arguments[0] : undefined;
           var O = toObject(this);
           var sourceLen = toLength(O.length);
@@ -3294,9 +3290,7 @@
         var fn = aFunction(this);
         var partArgs = slice.call(arguments, 1);
 
-        var boundFunction = function bound()
-        /* args... */
-        {
+        var boundFunction = function bound() {
           var args = partArgs.concat(slice.call(arguments));
           return this instanceof boundFunction ? construct(fn, args.length, args) : fn.apply(that, args);
         };
@@ -6116,9 +6110,19 @@
       "use strict";
 
       var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+      var __spreadArray = this && this.__spreadArray || function (to, from, pack) {
+        if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+          if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+          }
+        }
+        return to.concat(ar || Array.prototype.slice.call(from));
+      };
       /**
-       * @license Angular v12.0.0-next.0
-       * (c) 2010-2020 Google LLC. https://angular.io/
+       * @license Angular v14.2.0-next.0
+       * (c) 2010-2022 Google LLC. https://angular.io/
        * License: MIT
        */
 
@@ -6175,17 +6179,33 @@
             Object.keys(props).forEach(function (prop) {
               Object.defineProperty(obj, prop, props[prop]);
             });
+
+            for (var _i = 0, _a = Object.getOwnPropertySymbols(props); _i < _a.length; _i++) {
+              var sym = _a[_i];
+              var desc = Object.getOwnPropertyDescriptor(props, sym); // Since `Object.getOwnPropertySymbols` returns *all* symbols,
+              // including non-enumerable ones, retrieve property descriptor and check
+              // enumerability there. Proceed with the rewrite only when a property is
+              // enumerable to make the logic consistent with the way regular
+              // properties are retrieved (via `Object.keys`, which respects
+              // `enumerable: false` flag). More information:
+              // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties#retrieval
+
+              if (desc === null || desc === void 0 ? void 0 : desc.enumerable) {
+                Object.defineProperty(obj, sym, props[sym]);
+              }
+            }
+
             return obj;
           };
 
-          Object.create = function (obj, proto) {
-            if (typeof proto === 'object' && !Object.isFrozen(proto)) {
-              Object.keys(proto).forEach(function (prop) {
-                proto[prop] = rewriteDescriptor(obj, prop, proto[prop]);
+          Object.create = function (proto, propertiesObject) {
+            if (typeof propertiesObject === 'object' && !Object.isFrozen(propertiesObject)) {
+              Object.keys(propertiesObject).forEach(function (prop) {
+                propertiesObject[prop] = rewriteDescriptor(proto, prop, propertiesObject[prop]);
               });
             }
 
-            return _create(obj, proto);
+            return _create(proto, propertiesObject);
           };
 
           Object.getOwnPropertyDescriptor = function (obj, prop) {
@@ -6237,8 +6257,8 @@
             return _defineProperty(obj, prop, desc);
           } catch (error) {
             if (desc.configurable) {
-              // In case of errors, when the configurable flag was likely set by rewriteDescriptor(), let's
-              // retry with the original flag value
+              // In case of errors, when the configurable flag was likely set by rewriteDescriptor(),
+              // let's retry with the original flag value
               if (typeof originalConfigurableFlag == 'undefined') {
                 delete desc.configurable;
               } else {
@@ -6272,7 +6292,7 @@
                   descJson = desc.toString();
                 }
 
-                console.log("Attempting to configure '" + prop + "' with descriptor '" + descJson + "' on object '" + obj + "' and got error, giving up: " + error);
+                console.log("Attempting to configure '".concat(prop, "' with descriptor '").concat(descJson, "' on object '").concat(obj, "' and got error, giving up: ").concat(error));
               }
             } else {
               throw error;
@@ -6400,7 +6420,7 @@
           // is valid or not(for security check)
 
 
-          api.patchEventTarget(_global, apiTypes, {
+          api.patchEventTarget(_global, api, apiTypes, {
             vh: checkIEAndCrossContext,
             transferEventName: function transferEventName(eventName) {
               var pointerEventName = pointerEventsMap[eventName];
@@ -6429,7 +6449,7 @@
           // On older Chrome, no need since EventTarget was already patched
 
           if (!_global.EventTarget) {
-            api.patchEventTarget(_global, [WS.prototype]);
+            api.patchEventTarget(_global, api, [WS.prototype]);
           }
 
           _global.WebSocket = function (x, y) {
@@ -6586,13 +6606,23 @@
             req.onreadystatechange = null;
             return result;
           }
-        } // Whenever any eventListener fires, we check the eventListener target and all parents
+        }
+
+        var globalEventHandlersEventNames = ['abort', 'animationcancel', 'animationend', 'animationiteration', 'auxclick', 'beforeinput', 'blur', 'cancel', 'canplay', 'canplaythrough', 'change', 'compositionstart', 'compositionupdate', 'compositionend', 'cuechange', 'click', 'close', 'contextmenu', 'curechange', 'dblclick', 'drag', 'dragend', 'dragenter', 'dragexit', 'dragleave', 'dragover', 'drop', 'durationchange', 'emptied', 'ended', 'error', 'focus', 'focusin', 'focusout', 'gotpointercapture', 'input', 'invalid', 'keydown', 'keypress', 'keyup', 'load', 'loadstart', 'loadeddata', 'loadedmetadata', 'lostpointercapture', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'mousewheel', 'orientationchange', 'pause', 'play', 'playing', 'pointercancel', 'pointerdown', 'pointerenter', 'pointerleave', 'pointerlockchange', 'mozpointerlockchange', 'webkitpointerlockerchange', 'pointerlockerror', 'mozpointerlockerror', 'webkitpointerlockerror', 'pointermove', 'pointout', 'pointerover', 'pointerup', 'progress', 'ratechange', 'reset', 'resize', 'scroll', 'seeked', 'seeking', 'select', 'selectionchange', 'selectstart', 'show', 'sort', 'stalled', 'submit', 'suspend', 'timeupdate', 'volumechange', 'touchcancel', 'touchmove', 'touchstart', 'touchend', 'transitioncancel', 'transitionend', 'waiting', 'wheel'];
+        var documentEventNames = ['afterscriptexecute', 'beforescriptexecute', 'DOMContentLoaded', 'freeze', 'fullscreenchange', 'mozfullscreenchange', 'webkitfullscreenchange', 'msfullscreenchange', 'fullscreenerror', 'mozfullscreenerror', 'webkitfullscreenerror', 'msfullscreenerror', 'readystatechange', 'visibilitychange', 'resume'];
+        var windowEventNames = ['absolutedeviceorientation', 'afterinput', 'afterprint', 'appinstalled', 'beforeinstallprompt', 'beforeprint', 'beforeunload', 'devicelight', 'devicemotion', 'deviceorientation', 'deviceorientationabsolute', 'deviceproximity', 'hashchange', 'languagechange', 'message', 'mozbeforepaint', 'offline', 'online', 'paint', 'pageshow', 'pagehide', 'popstate', 'rejectionhandled', 'storage', 'unhandledrejection', 'unload', 'userproximity', 'vrdisplayconnected', 'vrdisplaydisconnected', 'vrdisplaypresentchange'];
+        var htmlElementEventNames = ['beforecopy', 'beforecut', 'beforepaste', 'copy', 'cut', 'paste', 'dragstart', 'loadend', 'animationstart', 'search', 'transitionrun', 'transitionstart', 'webkitanimationend', 'webkitanimationiteration', 'webkitanimationstart', 'webkittransitionend'];
+        var ieElementEventNames = ['activate', 'afterupdate', 'ariarequest', 'beforeactivate', 'beforedeactivate', 'beforeeditfocus', 'beforeupdate', 'cellchange', 'controlselect', 'dataavailable', 'datasetchanged', 'datasetcomplete', 'errorupdate', 'filterchange', 'layoutcomplete', 'losecapture', 'move', 'moveend', 'movestart', 'propertychange', 'resizeend', 'resizestart', 'rowenter', 'rowexit', 'rowsdelete', 'rowsinserted', 'command', 'compassneedscalibration', 'deactivate', 'help', 'mscontentzoom', 'msmanipulationstatechanged', 'msgesturechange', 'msgesturedoubletap', 'msgestureend', 'msgesturehold', 'msgesturestart', 'msgesturetap', 'msgotpointercapture', 'msinertiastart', 'mslostpointercapture', 'mspointercancel', 'mspointerdown', 'mspointerenter', 'mspointerhover', 'mspointerleave', 'mspointermove', 'mspointerout', 'mspointerover', 'mspointerup', 'pointerout', 'mssitemodejumplistitemremoved', 'msthumbnailclick', 'stop', 'storagecommit'];
+        var webglEventNames = ['webglcontextrestored', 'webglcontextlost', 'webglcontextcreationerror'];
+        var formEventNames = ['autocomplete', 'autocompleteerror'];
+        var detailEventNames = ['toggle'];
+
+        var eventNames = __spreadArray(__spreadArray(__spreadArray(__spreadArray(__spreadArray(__spreadArray(__spreadArray(__spreadArray([], globalEventHandlersEventNames, true), webglEventNames, true), formEventNames, true), detailEventNames, true), documentEventNames, true), windowEventNames, true), htmlElementEventNames, true), ieElementEventNames, true); // Whenever any eventListener fires, we check the eventListener target and all parents
         // for `onwhatever` properties and replace them with zone-bound functions
         // - Chrome (for now)
 
 
         function patchViaCapturingAllTheEvents(api) {
-          var eventNames = api.getGlobalObjects().eventNames;
           var unboundKey = api.symbol('unbound');
 
           var _loop_1 = function _loop_1(i) {
@@ -8133,9 +8163,7 @@
         stat: true,
         forced: ISNT_GENERIC
       }, {
-        of: function of()
-        /* ...args */
-        {
+        of: function of() {
           var index = 0;
           var argumentsLength = arguments.length;
           var result = new (typeof this == 'function' ? this : Array)(argumentsLength);
@@ -12103,8 +12131,8 @@
     function pDpN(module, exports, __webpack_require__) {
       "use strict";
       /**
-       * @license Angular v12.0.0-next.0
-       * (c) 2010-2020 Google LLC. https://angular.io/
+       * @license Angular v14.2.0-next.0
+       * (c) 2010-2022 Google LLC. https://angular.io/
        * License: MIT
        */
 
@@ -12116,7 +12144,7 @@
        * found in the LICENSE file at https://angular.io/license
        */
 
-      var Zone$1 = function (global) {
+      (function (global) {
         var performance = global['performance'];
 
         function mark(name) {
@@ -12163,7 +12191,7 @@
             this._parent = parent;
             this._name = zoneSpec ? zoneSpec.name || 'unnamed' : '<root>';
             this._properties = zoneSpec && zoneSpec.properties || {};
-            this._zoneDelegate = new ZoneDelegate(this, this._parent && this._parent._zoneDelegate, zoneSpec);
+            this._zoneDelegate = new _ZoneDelegate(this, this._parent && this._parent._zoneDelegate, zoneSpec);
           }
 
           _createClass(Zone, [{
@@ -12480,9 +12508,9 @@
           }
         };
 
-        var ZoneDelegate = /*#__PURE__*/function () {
-          function ZoneDelegate(zone, parentDelegate, zoneSpec) {
-            _classCallCheck(this, ZoneDelegate);
+        var _ZoneDelegate = /*#__PURE__*/function () {
+          function _ZoneDelegate(zone, parentDelegate, zoneSpec) {
+            _classCallCheck(this, _ZoneDelegate);
 
             this._taskCounts = {
               'microTask': 0,
@@ -12547,7 +12575,7 @@
             }
           }
 
-          _createClass(ZoneDelegate, [{
+          _createClass(_ZoneDelegate, [{
             key: "fork",
             value: function fork(targetZone, zoneSpec) {
               return this._forkZS ? this._forkZS.onFork(this._forkDlgt, this.zone, targetZone, zoneSpec) : new Zone(targetZone, zoneSpec);
@@ -12650,7 +12678,7 @@
             }
           }]);
 
-          return ZoneDelegate;
+          return _ZoneDelegate;
         }();
 
         var ZoneTask = /*#__PURE__*/function () {
@@ -12777,30 +12805,34 @@
         var _isDrainingMicrotaskQueue = false;
         var nativeMicroTaskQueuePromise;
 
+        function nativeScheduleMicroTask(func) {
+          if (!nativeMicroTaskQueuePromise) {
+            if (global[symbolPromise]) {
+              nativeMicroTaskQueuePromise = global[symbolPromise].resolve(0);
+            }
+          }
+
+          if (nativeMicroTaskQueuePromise) {
+            var nativeThen = nativeMicroTaskQueuePromise[symbolThen];
+
+            if (!nativeThen) {
+              // native Promise is not patchable, we need to use `then` directly
+              // issue 1078
+              nativeThen = nativeMicroTaskQueuePromise['then'];
+            }
+
+            nativeThen.call(nativeMicroTaskQueuePromise, func);
+          } else {
+            global[symbolSetTimeout](func, 0);
+          }
+        }
+
         function scheduleMicroTask(task) {
           // if we are not running in any task, and there has not been anything scheduled
           // we must bootstrap the initial task creation by manually scheduling the drain
           if (_numberOfNestedTaskFrames === 0 && _microTaskQueue.length === 0) {
             // We are not running in Task, so we need to kickstart the microtask queue.
-            if (!nativeMicroTaskQueuePromise) {
-              if (global[symbolPromise]) {
-                nativeMicroTaskQueuePromise = global[symbolPromise].resolve(0);
-              }
-            }
-
-            if (nativeMicroTaskQueuePromise) {
-              var nativeThen = nativeMicroTaskQueuePromise[symbolThen];
-
-              if (!nativeThen) {
-                // native Promise is not patchable, we need to use `then` directly
-                // issue 1078
-                nativeThen = nativeMicroTaskQueuePromise['then'];
-              }
-
-              nativeThen.call(nativeMicroTaskQueuePromise, drainMicroTaskQueue);
-            } else {
-              global[symbolSetTimeout](drainMicroTaskQueue, 0);
-            }
+            nativeScheduleMicroTask(drainMicroTaskQueue);
           }
 
           task && _microTaskQueue.push(task);
@@ -12914,7 +12946,8 @@
           },
           patchCallbacks: function patchCallbacks() {
             return noop;
-          }
+          },
+          nativeScheduleMicroTask: nativeScheduleMicroTask
         };
         var _currentZoneFrame = {
           parent: null,
@@ -12927,7 +12960,7 @@
 
         performanceMeasure('Zone', 'Zone');
         return global['Zone'] = Zone;
-      }(typeof window !== 'undefined' && window || typeof self !== 'undefined' && self || global);
+      })(typeof window !== 'undefined' && window || typeof self !== 'undefined' && self || global);
       /**
        * @license
        * Copyright Google LLC All Rights Reserved.
@@ -12999,7 +13032,6 @@
       var _global = isWindowExists && internalWindow || typeof self === 'object' && self || global;
 
       var REMOVE_ATTRIBUTE = 'removeAttribute';
-      var NULL_ON_PROP_VALUE = [null];
 
       function bindArguments(args, source) {
         for (var i = args.length - 1; i >= 0; i--) {
@@ -13064,7 +13096,7 @@
       // this code.
 
       var isMix = typeof _global.process !== 'undefined' && {}.toString.call(_global.process) === '[object process]' && !isWebWorker && !!(isWindowExists && internalWindow['HTMLElement']);
-      var zoneSymbolEventNames = {};
+      var zoneSymbolEventNames$1 = {};
 
       var wrapFn = function wrapFn(event) {
         // https://github.com/angular/zone.js/issues/911, in IE, sometimes
@@ -13075,10 +13107,10 @@
           return;
         }
 
-        var eventNameSymbol = zoneSymbolEventNames[event.type];
+        var eventNameSymbol = zoneSymbolEventNames$1[event.type];
 
         if (!eventNameSymbol) {
-          eventNameSymbol = zoneSymbolEventNames[event.type] = zoneSymbol('ON_PROPERTY' + event.type);
+          eventNameSymbol = zoneSymbolEventNames$1[event.type] = zoneSymbol('ON_PROPERTY' + event.type);
         }
 
         var target = this || event.target || _global;
@@ -13086,7 +13118,7 @@
         var result;
 
         if (isBrowser && target === internalWindow && event.type === 'error') {
-          // window.onerror have different signiture
+          // window.onerror have different signature
           // https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onerror#window.onerror
           // and onerror callback will prevent default when callback return true
           var errorEvent = event;
@@ -13141,13 +13173,13 @@
         delete desc.writable;
         delete desc.value;
         var originalDescGet = desc.get;
-        var originalDescSet = desc.set; // substr(2) cuz 'onclick' -> 'click', etc
+        var originalDescSet = desc.set; // slice(2) cuz 'onclick' -> 'click', etc
 
-        var eventName = prop.substr(2);
-        var eventNameSymbol = zoneSymbolEventNames[eventName];
+        var eventName = prop.slice(2);
+        var eventNameSymbol = zoneSymbolEventNames$1[eventName];
 
         if (!eventNameSymbol) {
-          eventNameSymbol = zoneSymbolEventNames[eventName] = zoneSymbol('ON_PROPERTY' + eventName);
+          eventNameSymbol = zoneSymbolEventNames$1[eventName] = zoneSymbol('ON_PROPERTY' + eventName);
         }
 
         desc.set = function (newValue) {
@@ -13165,21 +13197,17 @@
 
           var previousValue = target[eventNameSymbol];
 
-          if (previousValue) {
+          if (typeof previousValue === 'function') {
             target.removeEventListener(eventName, wrapFn);
           } // issue #978, when onload handler was added before loading zone.js
           // we should remove it with originalDescSet
 
 
-          if (originalDescSet) {
-            originalDescSet.apply(target, NULL_ON_PROP_VALUE);
-          }
+          originalDescSet && originalDescSet.call(target, null);
+          target[eventNameSymbol] = newValue;
 
           if (typeof newValue === 'function') {
-            target[eventNameSymbol] = newValue;
             target.addEventListener(eventName, wrapFn, false);
-          } else {
-            target[eventNameSymbol] = null;
           }
         }; // The getter would return undefined for unassigned properties but the default value of an
         // unassigned property is null
@@ -13209,7 +13237,7 @@
             // the onclick will be evaluated when first time event was triggered or
             // the property is accessed, https://github.com/angular/zone.js/issues/525
             // so we should use original native get to retrieve the handler
-            var value = originalDescGet && originalDescGet.call(this);
+            var value = originalDescGet.call(this);
 
             if (value) {
               desc.set.call(this, value);
@@ -13238,7 +13266,7 @@
           var onProperties = [];
 
           for (var prop in obj) {
-            if (prop.substr(0, 2) == 'on') {
+            if (prop.slice(0, 2) == 'on') {
               onProperties.push(prop);
             }
           }
@@ -13730,7 +13758,9 @@
 
         var noop = function noop() {};
 
-        var ZoneAwarePromise = /*#__PURE__*/function () {
+        var AggregateError = global.AggregateError;
+
+        var ZoneAwarePromise = /*#__PURE__*/function (_Symbol$toStringTag, _Symbol$species) {
           function ZoneAwarePromise(executor) {
             _classCallCheck(this, ZoneAwarePromise);
 
@@ -13744,26 +13774,37 @@
             promise[symbolValue] = []; // queue;
 
             try {
-              executor && executor(makeResolver(promise, RESOLVED), makeResolver(promise, REJECTED));
+              var onceWrapper = once();
+              executor && executor(onceWrapper(makeResolver(promise, RESOLVED)), onceWrapper(makeResolver(promise, REJECTED)));
             } catch (error) {
               resolvePromise(promise, false, error);
             }
           }
 
           _createClass(ZoneAwarePromise, [{
-            key: Symbol.toStringTag,
+            key: _Symbol$toStringTag,
             get: function get() {
               return 'Promise';
             }
           }, {
-            key: Symbol.species,
+            key: _Symbol$species,
             get: function get() {
               return ZoneAwarePromise;
             }
           }, {
             key: "then",
             value: function then(onFulfilled, onRejected) {
-              var C = this.constructor[Symbol.species];
+              var _a; // We must read `Symbol.species` safely because `this` may be anything. For instance, `this`
+              // may be an object without a prototype (created through `Object.create(null)`); thus
+              // `this.constructor` will be undefined. One of the use cases is SystemJS creating
+              // prototype-less objects (modules) via `Object.create(null)`. The SystemJS creates an empty
+              // object and copies promise properties into that object (within the `getOrCreateLoad`
+              // function). The zone.js then checks if the resolved value has the `then` method and invokes
+              // it with the `value` context. Otherwise, this will throw an error: `TypeError: Cannot read
+              // properties of undefined (reading 'Symbol(Symbol.species)')`.
+
+
+              var C = (_a = this.constructor) === null || _a === void 0 ? void 0 : _a[Symbol.species];
 
               if (!C || typeof C !== 'function') {
                 C = this.constructor || ZoneAwarePromise;
@@ -13788,7 +13829,10 @@
           }, {
             key: "finally",
             value: function _finally(onFinally) {
-              var C = this.constructor[Symbol.species];
+              var _a; // See comment on the call to `then` about why thee `Symbol.species` is safely accessed.
+
+
+              var C = (_a = this.constructor) === null || _a === void 0 ? void 0 : _a[Symbol.species];
 
               if (!C || typeof C !== 'function') {
                 C = ZoneAwarePromise;
@@ -13822,6 +13866,62 @@
               return resolvePromise(new this(null), REJECTED, error);
             }
           }, {
+            key: "any",
+            value: function any(values) {
+              if (!values || typeof values[Symbol.iterator] !== 'function') {
+                return Promise.reject(new AggregateError([], 'All promises were rejected'));
+              }
+
+              var promises = [];
+              var count = 0;
+
+              try {
+                var _iterator = _createForOfIteratorHelper(values),
+                    _step;
+
+                try {
+                  for (_iterator.s(); !(_step = _iterator.n()).done;) {
+                    var v = _step.value;
+                    count++;
+                    promises.push(ZoneAwarePromise.resolve(v));
+                  }
+                } catch (err) {
+                  _iterator.e(err);
+                } finally {
+                  _iterator.f();
+                }
+              } catch (err) {
+                return Promise.reject(new AggregateError([], 'All promises were rejected'));
+              }
+
+              if (count === 0) {
+                return Promise.reject(new AggregateError([], 'All promises were rejected'));
+              }
+
+              var finished = false;
+              var errors = [];
+              return new ZoneAwarePromise(function (resolve, reject) {
+                for (var i = 0; i < promises.length; i++) {
+                  promises[i].then(function (v) {
+                    if (finished) {
+                      return;
+                    }
+
+                    finished = true;
+                    resolve(v);
+                  }, function (err) {
+                    errors.push(err);
+                    count--;
+
+                    if (count === 0) {
+                      finished = true;
+                      reject(new AggregateError(errors, 'All promises were rejected'));
+                    }
+                  });
+                }
+              });
+            }
+          }, {
             key: "race",
             value: function race(values) {
               var resolve;
@@ -13839,12 +13939,12 @@
                 reject(error);
               }
 
-              var _iterator = _createForOfIteratorHelper(values),
-                  _step;
+              var _iterator2 = _createForOfIteratorHelper(values),
+                  _step2;
 
               try {
-                for (_iterator.s(); !(_step = _iterator.n()).done;) {
-                  var value = _step.value;
+                for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+                  var value = _step2.value;
 
                   if (!isThenable(value)) {
                     value = this.resolve(value);
@@ -13853,9 +13953,9 @@
                   value.then(onResolve, onReject);
                 }
               } catch (err) {
-                _iterator.e(err);
+                _iterator2.e(err);
               } finally {
-                _iterator.f();
+                _iterator2.f();
               }
 
               return promise;
@@ -13900,12 +14000,12 @@
               var valueIndex = 0;
               var resolvedValues = [];
 
-              var _iterator2 = _createForOfIteratorHelper(values),
-                  _step2;
+              var _iterator3 = _createForOfIteratorHelper(values),
+                  _step3;
 
               try {
                 var _loop3 = function _loop3() {
-                  var value = _step2.value;
+                  var value = _step3.value;
 
                   if (!isThenable(value)) {
                     value = _this.resolve(value);
@@ -13941,14 +14041,14 @@
                   valueIndex++;
                 };
 
-                for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+                for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
                   _loop3();
                 } // Make the unresolvedCount zero-based again.
 
               } catch (err) {
-                _iterator2.e(err);
+                _iterator3.e(err);
               } finally {
-                _iterator2.f();
+                _iterator3.f();
               }
 
               unresolvedCount -= 2;
@@ -13962,7 +14062,7 @@
           }]);
 
           return ZoneAwarePromise;
-        }(); // Protect against aggressive optimizers dropping seemingly unused properties.
+        }(Symbol.toStringTag, Symbol.species); // Protect against aggressive optimizers dropping seemingly unused properties.
         // E.g. Closure Compiler in advanced mode.
 
 
@@ -14113,7 +14213,10 @@
             get: function get() {
               passiveSupported = true;
             }
-          });
+          }); // Note: We pass the `options` object as the event handler too. This is not compatible with the
+          // signature of `addEventListener` or `removeEventListener` but enables us to remove the handler
+          // without an actual handler.
+
           window.addEventListener('test', options, options);
           window.removeEventListener('test', options, options);
         } catch (err) {
@@ -14125,7 +14228,7 @@
       var OPTIMIZED_ZONE_EVENT_TASK_DATA = {
         useG: true
       };
-      var zoneSymbolEventNames$1 = {};
+      var zoneSymbolEventNames = {};
       var globalSources = {};
       var EVENT_NAME_SYMBOL_REGX = new RegExp('^' + ZONE_SYMBOL_PREFIX + '(\\w+)(true|false)$');
       var IMMEDIATE_PROPAGATION_SYMBOL = zoneSymbol('propagationStopped');
@@ -14135,12 +14238,12 @@
         var trueEventName = (eventNameToString ? eventNameToString(eventName) : eventName) + TRUE_STR;
         var symbol = ZONE_SYMBOL_PREFIX + falseEventName;
         var symbolCapture = ZONE_SYMBOL_PREFIX + trueEventName;
-        zoneSymbolEventNames$1[eventName] = {};
-        zoneSymbolEventNames$1[eventName][FALSE_STR] = symbol;
-        zoneSymbolEventNames$1[eventName][TRUE_STR] = symbolCapture;
+        zoneSymbolEventNames[eventName] = {};
+        zoneSymbolEventNames[eventName][FALSE_STR] = symbol;
+        zoneSymbolEventNames[eventName][TRUE_STR] = symbolCapture;
       }
 
-      function patchEventTarget(_global, apis, patchOptions) {
+      function patchEventTarget(_global, api, apis, patchOptions) {
         var ADD_EVENT_LISTENER = patchOptions && patchOptions.add || ADD_EVENT_LISTENER_STR;
         var REMOVE_EVENT_LISTENER = patchOptions && patchOptions.rm || REMOVE_EVENT_LISTENER_STR;
         var LISTENERS_EVENT_LISTENER = patchOptions && patchOptions.listeners || 'eventListeners';
@@ -14167,9 +14270,19 @@
 
             task.originalDelegate = delegate;
           } // invoke static task.invoke
+          // need to try/catch error here, otherwise, the error in one event listener
+          // will break the executions of the other event listeners. Also error will
+          // not remove the event listener when `once` options is true.
 
 
-          task.invoke(task, target, [event]);
+          var error;
+
+          try {
+            task.invoke(task, target, [event]);
+          } catch (err) {
+            error = err;
+          }
+
           var options = task.options;
 
           if (options && typeof options === 'object' && options.once) {
@@ -14180,10 +14293,11 @@
 
             target[REMOVE_EVENT_LISTENER].call(target, event.type, _delegate, options);
           }
-        }; // global shared zoneAwareCallback to handle all event callback with capture = false
 
+          return error;
+        };
 
-        var globalZoneAwareCallback = function globalZoneAwareCallback(event) {
+        function globalCallback(context, event, isCapture) {
           // https://github.com/angular/zone.js/issues/911, in IE, sometimes
           // event will be undefined, so we need to use window.event
           event = event || _global.event;
@@ -14194,14 +14308,16 @@
           // || global is needed https://github.com/angular/zone.js/issues/190
 
 
-          var target = this || event.target || _global;
-          var tasks = target[zoneSymbolEventNames$1[event.type][FALSE_STR]];
+          var target = context || event.target || _global;
+          var tasks = target[zoneSymbolEventNames[event.type][isCapture ? TRUE_STR : FALSE_STR]];
 
           if (tasks) {
-            // invoke all tasks which attached to current target with given event.type and capture = false
+            var errors = []; // invoke all tasks which attached to current target with given event.type and capture = false
             // for performance concern, if task.length === 1, just invoke
+
             if (tasks.length === 1) {
-              invokeTask(tasks[0], target, event);
+              var err = invokeTask(tasks[0], target, event);
+              err && errors.push(err);
             } else {
               // https://github.com/angular/zone.js/issues/836
               // copy the tasks array before invoke, to avoid
@@ -14213,47 +14329,39 @@
                   break;
                 }
 
-                invokeTask(copyTasks[i], target, event);
+                var _err = invokeTask(copyTasks[i], target, event);
+
+                _err && errors.push(_err);
+              }
+            } // Since there is only one error, we don't need to schedule microTask
+            // to throw the error.
+
+
+            if (errors.length === 1) {
+              throw errors[0];
+            } else {
+              var _loop4 = function _loop4(_i2) {
+                var err = errors[_i2];
+                api.nativeScheduleMicroTask(function () {
+                  throw err;
+                });
+              };
+
+              for (var _i2 = 0; _i2 < errors.length; _i2++) {
+                _loop4(_i2);
               }
             }
           }
+        } // global shared zoneAwareCallback to handle all event callback with capture = false
+
+
+        var globalZoneAwareCallback = function globalZoneAwareCallback(event) {
+          return globalCallback(this, event, false);
         }; // global shared zoneAwareCallback to handle all event callback with capture = true
 
 
         var globalZoneAwareCaptureCallback = function globalZoneAwareCaptureCallback(event) {
-          // https://github.com/angular/zone.js/issues/911, in IE, sometimes
-          // event will be undefined, so we need to use window.event
-          event = event || _global.event;
-
-          if (!event) {
-            return;
-          } // event.target is needed for Samsung TV and SourceBuffer
-          // || global is needed https://github.com/angular/zone.js/issues/190
-
-
-          var target = this || event.target || _global;
-          var tasks = target[zoneSymbolEventNames$1[event.type][TRUE_STR]];
-
-          if (tasks) {
-            // invoke all tasks which attached to current target with given event.type and capture = false
-            // for performance concern, if task.length === 1, just invoke
-            if (tasks.length === 1) {
-              invokeTask(tasks[0], target, event);
-            } else {
-              // https://github.com/angular/zone.js/issues/836
-              // copy the tasks array before invoke, to avoid
-              // the callback will remove itself or other listener
-              var copyTasks = tasks.slice();
-
-              for (var i = 0; i < copyTasks.length; i++) {
-                if (event && event[IMMEDIATE_PROPAGATION_SYMBOL] === true) {
-                  break;
-                }
-
-                invokeTask(copyTasks[i], target, event);
-              }
-            }
-          }
+          return globalCallback(this, event, true);
         };
 
         function patchEventTargetMethods(obj, patchOptions) {
@@ -14367,7 +14475,7 @@
             // from Zone.prototype.cancelTask, we should remove the task
             // from tasksList of target first
             if (!task.isRemoved) {
-              var symbolEventNames = zoneSymbolEventNames$1[task.eventName];
+              var symbolEventNames = zoneSymbolEventNames[task.eventName];
               var symbolEventName;
 
               if (symbolEventNames) {
@@ -14476,7 +14584,7 @@
               var options = buildEventListenerOptions(arguments[2], passive);
 
               if (unpatchedEvents) {
-                // check upatched list
+                // check unpatched list
                 for (var i = 0; i < unpatchedEvents.length; i++) {
                   if (eventName === unpatchedEvents[i]) {
                     if (passive) {
@@ -14491,11 +14599,11 @@
               var capture = !options ? false : typeof options === 'boolean' ? true : options.capture;
               var once = options && typeof options === 'object' ? options.once : false;
               var zone = Zone.current;
-              var symbolEventNames = zoneSymbolEventNames$1[eventName];
+              var symbolEventNames = zoneSymbolEventNames[eventName];
 
               if (!symbolEventNames) {
                 prepareEventNames(eventName, eventNameToString);
-                symbolEventNames = zoneSymbolEventNames$1[eventName];
+                symbolEventNames = zoneSymbolEventNames[eventName];
               }
 
               var symbolEventName = symbolEventNames[capture ? TRUE_STR : FALSE_STR];
@@ -14507,8 +14615,8 @@
                 isExisting = true;
 
                 if (checkDuplicate) {
-                  for (var _i = 0; _i < existingTasks.length; _i++) {
-                    if (compare(existingTasks[_i], delegate)) {
+                  for (var _i3 = 0; _i3 < existingTasks.length; _i3++) {
+                    if (compare(existingTasks[_i3], delegate)) {
                       // same callback, same capture, same event name, just return
                       return;
                     }
@@ -14619,7 +14727,7 @@
               return;
             }
 
-            var symbolEventNames = zoneSymbolEventNames$1[eventName];
+            var symbolEventNames = zoneSymbolEventNames[eventName];
             var symbolEventName;
 
             if (symbolEventNames) {
@@ -14716,7 +14824,7 @@
                 eventName = patchOptions.transferEventName(eventName);
               }
 
-              var symbolEventNames = zoneSymbolEventNames$1[eventName];
+              var symbolEventNames = zoneSymbolEventNames[eventName];
 
               if (symbolEventNames) {
                 var symbolEventName = symbolEventNames[FALSE_STR];
@@ -14727,8 +14835,8 @@
                 if (tasks) {
                   var removeTasks = tasks.slice();
 
-                  for (var _i2 = 0; _i2 < removeTasks.length; _i2++) {
-                    var task = removeTasks[_i2];
+                  for (var _i4 = 0; _i4 < removeTasks.length; _i4++) {
+                    var task = removeTasks[_i4];
                     var delegate = task.originalDelegate ? task.originalDelegate : task.callback;
                     this[REMOVE_EVENT_LISTENER].call(this, eventName, delegate, task.options);
                   }
@@ -14737,8 +14845,8 @@
                 if (captureTasks) {
                   var _removeTasks = captureTasks.slice();
 
-                  for (var _i3 = 0; _i3 < _removeTasks.length; _i3++) {
-                    var _task = _removeTasks[_i3];
+                  for (var _i5 = 0; _i5 < _removeTasks.length; _i5++) {
+                    var _task = _removeTasks[_i5];
 
                     var _delegate2 = _task.originalDelegate ? _task.originalDelegate : _task.callback;
 
@@ -14799,11 +14907,11 @@
           return foundTasks;
         }
 
-        var symbolEventName = zoneSymbolEventNames$1[eventName];
+        var symbolEventName = zoneSymbolEventNames[eventName];
 
         if (!symbolEventName) {
           prepareEventNames(eventName);
-          symbolEventName = zoneSymbolEventNames$1[eventName];
+          symbolEventName = zoneSymbolEventNames[eventName];
         }
 
         var captureFalseTasks = target[symbolEventName[FALSE_STR]];
@@ -14853,20 +14961,31 @@
           if (opts && opts.prototype) {
             callbacks.forEach(function (callback) {
               var source = "".concat(targetName, ".").concat(method, "::") + callback;
-              var prototype = opts.prototype;
+              var prototype = opts.prototype; // Note: the `patchCallbacks` is used for patching the `document.registerElement` and
+              // `customElements.define`. We explicitly wrap the patching code into try-catch since
+              // callbacks may be already patched by other web components frameworks (e.g. LWC), and they
+              // make those properties non-writable. This means that patching callback will throw an error
+              // `cannot assign to read-only property`. See this code as an example:
+              // https://github.com/salesforce/lwc/blob/master/packages/@lwc/engine-core/src/framework/base-bridge-element.ts#L180-L186
+              // We don't want to stop the application rendering if we couldn't patch some
+              // callback, e.g. `attributeChangedCallback`.
 
-              if (prototype.hasOwnProperty(callback)) {
-                var descriptor = api.ObjectGetOwnPropertyDescriptor(prototype, callback);
+              try {
+                if (prototype.hasOwnProperty(callback)) {
+                  var descriptor = api.ObjectGetOwnPropertyDescriptor(prototype, callback);
 
-                if (descriptor && descriptor.value) {
-                  descriptor.value = api.wrapWithCurrentZone(descriptor.value, source);
+                  if (descriptor && descriptor.value) {
+                    descriptor.value = api.wrapWithCurrentZone(descriptor.value, source);
 
-                  api._redefineProperty(opts.prototype, callback, descriptor);
+                    api._redefineProperty(opts.prototype, callback, descriptor);
+                  } else if (prototype[callback]) {
+                    prototype[callback] = api.wrapWithCurrentZone(prototype[callback], source);
+                  }
                 } else if (prototype[callback]) {
                   prototype[callback] = api.wrapWithCurrentZone(prototype[callback], source);
                 }
-              } else if (prototype[callback]) {
-                prototype[callback] = api.wrapWithCurrentZone(prototype[callback], source);
+              } catch (_a) {// Note: we leave the catch block empty since there's no way to handle the error related
+                // to non-writable property.
               }
             });
           }
@@ -14884,24 +15003,6 @@
        * found in the LICENSE file at https://angular.io/license
        */
 
-
-      var globalEventHandlersEventNames = ['abort', 'animationcancel', 'animationend', 'animationiteration', 'auxclick', 'beforeinput', 'blur', 'cancel', 'canplay', 'canplaythrough', 'change', 'compositionstart', 'compositionupdate', 'compositionend', 'cuechange', 'click', 'close', 'contextmenu', 'curechange', 'dblclick', 'drag', 'dragend', 'dragenter', 'dragexit', 'dragleave', 'dragover', 'drop', 'durationchange', 'emptied', 'ended', 'error', 'focus', 'focusin', 'focusout', 'gotpointercapture', 'input', 'invalid', 'keydown', 'keypress', 'keyup', 'load', 'loadstart', 'loadeddata', 'loadedmetadata', 'lostpointercapture', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'mousewheel', 'orientationchange', 'pause', 'play', 'playing', 'pointercancel', 'pointerdown', 'pointerenter', 'pointerleave', 'pointerlockchange', 'mozpointerlockchange', 'webkitpointerlockerchange', 'pointerlockerror', 'mozpointerlockerror', 'webkitpointerlockerror', 'pointermove', 'pointout', 'pointerover', 'pointerup', 'progress', 'ratechange', 'reset', 'resize', 'scroll', 'seeked', 'seeking', 'select', 'selectionchange', 'selectstart', 'show', 'sort', 'stalled', 'submit', 'suspend', 'timeupdate', 'volumechange', 'touchcancel', 'touchmove', 'touchstart', 'touchend', 'transitioncancel', 'transitionend', 'waiting', 'wheel'];
-      var documentEventNames = ['afterscriptexecute', 'beforescriptexecute', 'DOMContentLoaded', 'freeze', 'fullscreenchange', 'mozfullscreenchange', 'webkitfullscreenchange', 'msfullscreenchange', 'fullscreenerror', 'mozfullscreenerror', 'webkitfullscreenerror', 'msfullscreenerror', 'readystatechange', 'visibilitychange', 'resume'];
-      var windowEventNames = ['absolutedeviceorientation', 'afterinput', 'afterprint', 'appinstalled', 'beforeinstallprompt', 'beforeprint', 'beforeunload', 'devicelight', 'devicemotion', 'deviceorientation', 'deviceorientationabsolute', 'deviceproximity', 'hashchange', 'languagechange', 'message', 'mozbeforepaint', 'offline', 'online', 'paint', 'pageshow', 'pagehide', 'popstate', 'rejectionhandled', 'storage', 'unhandledrejection', 'unload', 'userproximity', 'vrdisplayconnected', 'vrdisplaydisconnected', 'vrdisplaypresentchange'];
-      var htmlElementEventNames = ['beforecopy', 'beforecut', 'beforepaste', 'copy', 'cut', 'paste', 'dragstart', 'loadend', 'animationstart', 'search', 'transitionrun', 'transitionstart', 'webkitanimationend', 'webkitanimationiteration', 'webkitanimationstart', 'webkittransitionend'];
-      var mediaElementEventNames = ['encrypted', 'waitingforkey', 'msneedkey', 'mozinterruptbegin', 'mozinterruptend'];
-      var ieElementEventNames = ['activate', 'afterupdate', 'ariarequest', 'beforeactivate', 'beforedeactivate', 'beforeeditfocus', 'beforeupdate', 'cellchange', 'controlselect', 'dataavailable', 'datasetchanged', 'datasetcomplete', 'errorupdate', 'filterchange', 'layoutcomplete', 'losecapture', 'move', 'moveend', 'movestart', 'propertychange', 'resizeend', 'resizestart', 'rowenter', 'rowexit', 'rowsdelete', 'rowsinserted', 'command', 'compassneedscalibration', 'deactivate', 'help', 'mscontentzoom', 'msmanipulationstatechanged', 'msgesturechange', 'msgesturedoubletap', 'msgestureend', 'msgesturehold', 'msgesturestart', 'msgesturetap', 'msgotpointercapture', 'msinertiastart', 'mslostpointercapture', 'mspointercancel', 'mspointerdown', 'mspointerenter', 'mspointerhover', 'mspointerleave', 'mspointermove', 'mspointerout', 'mspointerover', 'mspointerup', 'pointerout', 'mssitemodejumplistitemremoved', 'msthumbnailclick', 'stop', 'storagecommit'];
-      var webglEventNames = ['webglcontextrestored', 'webglcontextlost', 'webglcontextcreationerror'];
-      var formEventNames = ['autocomplete', 'autocompleteerror'];
-      var detailEventNames = ['toggle'];
-      var frameEventNames = ['load'];
-      var frameSetEventNames = ['blur', 'error', 'focus', 'load', 'resize', 'scroll', 'messageerror'];
-      var marqueeEventNames = ['bounce', 'finish', 'start'];
-      var XMLHttpRequestEventNames = ['loadstart', 'progress', 'abort', 'error', 'load', 'progress', 'timeout', 'loadend', 'readystatechange'];
-      var IDBIndexEventNames = ['upgradeneeded', 'complete', 'abort', 'success', 'error', 'blocked', 'versionchange', 'close'];
-      var websocketEventNames = ['close', 'error', 'open', 'message'];
-      var workerEventNames = ['error', 'message'];
-      var eventNames = globalEventHandlersEventNames.concat(webglEventNames, formEventNames, detailEventNames, documentEventNames, windowEventNames, htmlElementEventNames, ieElementEventNames);
 
       function filterProperties(target, onProperties, ignoreProperties) {
         if (!ignoreProperties || ignoreProperties.length === 0) {
@@ -14932,6 +15033,19 @@
         var filteredProperties = filterProperties(target, onProperties, ignoreProperties);
         patchOnProperties(target, filteredProperties, prototype);
       }
+      /**
+       * Get all event name properties which the event name startsWith `on`
+       * from the target object itself, inherited properties are not considered.
+       */
+
+
+      function getOnEventNames(target) {
+        return Object.getOwnPropertyNames(target).filter(function (name) {
+          return name.startsWith('on') && name.length > 2;
+        }).map(function (name) {
+          return name.substring(2);
+        });
+      }
 
       function propertyDescriptorPatch(api, _global) {
         if (isNode && !isMix) {
@@ -14943,68 +15057,27 @@
           return;
         }
 
-        var supportsWebSocket = typeof WebSocket !== 'undefined';
         var ignoreProperties = _global['__Zone_ignore_on_properties']; // for browsers that we can patch the descriptor:  Chrome & Firefox
+
+        var patchTargets = [];
 
         if (isBrowser) {
           var _internalWindow = window;
+          patchTargets = patchTargets.concat(['Document', 'SVGElement', 'Element', 'HTMLElement', 'HTMLBodyElement', 'HTMLMediaElement', 'HTMLFrameSetElement', 'HTMLFrameElement', 'HTMLIFrameElement', 'HTMLMarqueeElement', 'Worker']);
           var ignoreErrorProperties = isIE() ? [{
             target: _internalWindow,
             ignoreProperties: ['error']
           }] : []; // in IE/Edge, onProp not exist in window object, but in WindowPrototype
           // so we need to pass WindowPrototype to check onProp exist or not
 
-          patchFilteredProperties(_internalWindow, eventNames.concat(['messageerror']), ignoreProperties ? ignoreProperties.concat(ignoreErrorProperties) : ignoreProperties, ObjectGetPrototypeOf(_internalWindow));
-          patchFilteredProperties(Document.prototype, eventNames, ignoreProperties);
-
-          if (typeof _internalWindow['SVGElement'] !== 'undefined') {
-            patchFilteredProperties(_internalWindow['SVGElement'].prototype, eventNames, ignoreProperties);
-          }
-
-          patchFilteredProperties(Element.prototype, eventNames, ignoreProperties);
-          patchFilteredProperties(HTMLElement.prototype, eventNames, ignoreProperties);
-          patchFilteredProperties(HTMLMediaElement.prototype, mediaElementEventNames, ignoreProperties);
-          patchFilteredProperties(HTMLFrameSetElement.prototype, windowEventNames.concat(frameSetEventNames), ignoreProperties);
-          patchFilteredProperties(HTMLBodyElement.prototype, windowEventNames.concat(frameSetEventNames), ignoreProperties);
-          patchFilteredProperties(HTMLFrameElement.prototype, frameEventNames, ignoreProperties);
-          patchFilteredProperties(HTMLIFrameElement.prototype, frameEventNames, ignoreProperties);
-          var HTMLMarqueeElement = _internalWindow['HTMLMarqueeElement'];
-
-          if (HTMLMarqueeElement) {
-            patchFilteredProperties(HTMLMarqueeElement.prototype, marqueeEventNames, ignoreProperties);
-          }
-
-          var Worker = _internalWindow['Worker'];
-
-          if (Worker) {
-            patchFilteredProperties(Worker.prototype, workerEventNames, ignoreProperties);
-          }
+          patchFilteredProperties(_internalWindow, getOnEventNames(_internalWindow), ignoreProperties ? ignoreProperties.concat(ignoreErrorProperties) : ignoreProperties, ObjectGetPrototypeOf(_internalWindow));
         }
 
-        var XMLHttpRequest = _global['XMLHttpRequest'];
+        patchTargets = patchTargets.concat(['XMLHttpRequest', 'XMLHttpRequestEventTarget', 'IDBIndex', 'IDBRequest', 'IDBOpenDBRequest', 'IDBDatabase', 'IDBTransaction', 'IDBCursor', 'WebSocket']);
 
-        if (XMLHttpRequest) {
-          // XMLHttpRequest is not available in ServiceWorker, so we need to check here
-          patchFilteredProperties(XMLHttpRequest.prototype, XMLHttpRequestEventNames, ignoreProperties);
-        }
-
-        var XMLHttpRequestEventTarget = _global['XMLHttpRequestEventTarget'];
-
-        if (XMLHttpRequestEventTarget) {
-          patchFilteredProperties(XMLHttpRequestEventTarget && XMLHttpRequestEventTarget.prototype, XMLHttpRequestEventNames, ignoreProperties);
-        }
-
-        if (typeof IDBIndex !== 'undefined') {
-          patchFilteredProperties(IDBIndex.prototype, IDBIndexEventNames, ignoreProperties);
-          patchFilteredProperties(IDBRequest.prototype, IDBIndexEventNames, ignoreProperties);
-          patchFilteredProperties(IDBOpenDBRequest.prototype, IDBIndexEventNames, ignoreProperties);
-          patchFilteredProperties(IDBDatabase.prototype, IDBIndexEventNames, ignoreProperties);
-          patchFilteredProperties(IDBTransaction.prototype, IDBIndexEventNames, ignoreProperties);
-          patchFilteredProperties(IDBCursor.prototype, IDBIndexEventNames, ignoreProperties);
-        }
-
-        if (supportsWebSocket) {
-          patchFilteredProperties(WebSocket.prototype, websocketEventNames, ignoreProperties);
+        for (var i = 0; i < patchTargets.length; i++) {
+          var target = _global[patchTargets[i]];
+          target && target.prototype && patchFilteredProperties(target.prototype, getOnEventNames(target.prototype), ignoreProperties);
         }
       }
       /**
@@ -15017,6 +15090,9 @@
 
 
       Zone.__load_patch('util', function (global, Zone, api) {
+        // Collect native event names by looking at properties
+        // on the global namespace, e.g. 'onclick'.
+        var eventNames = getOnEventNames(global);
         api.patchOnProperties = patchOnProperties;
         api.patchMethod = patchMethod;
         api.bindArguments = bindArguments;
@@ -15056,7 +15132,7 @@
         api.getGlobalObjects = function () {
           return {
             globalSources: globalSources,
-            zoneSymbolEventNames: zoneSymbolEventNames$1,
+            zoneSymbolEventNames: zoneSymbolEventNames,
             eventNames: eventNames,
             isBrowser: isBrowser,
             isMix: isMix,
@@ -15270,7 +15346,7 @@
           return;
         }
 
-        api.patchEventTarget(_global, [EVENT_TARGET && EVENT_TARGET.prototype]);
+        api.patchEventTarget(_global, api, [EVENT_TARGET && EVENT_TARGET.prototype]);
         return true;
       }
 
@@ -15336,7 +15412,7 @@
         var XMLHttpRequestEventTarget = global['XMLHttpRequestEventTarget'];
 
         if (XMLHttpRequestEventTarget && XMLHttpRequestEventTarget.prototype) {
-          api.patchEventTarget(global, [XMLHttpRequestEventTarget.prototype]);
+          api.patchEventTarget(global, api, [XMLHttpRequestEventTarget.prototype]);
         }
       });
 
@@ -17560,30 +17636,30 @@
               if (TYPE) {
                 if (IS_MAP) target[index] = result; // map
                 else if (result) switch (TYPE) {
-                    case 3:
-                      return true;
-                    // some
+                  case 3:
+                    return true;
+                  // some
 
-                    case 5:
-                      return value;
-                    // find
+                  case 5:
+                    return value;
+                  // find
 
-                    case 6:
-                      return index;
-                    // findIndex
+                  case 6:
+                    return index;
+                  // findIndex
 
-                    case 2:
-                      push.call(target, value);
-                    // filter
-                  } else switch (TYPE) {
-                    case 4:
-                      return false;
-                    // every
+                  case 2:
+                    push.call(target, value);
+                  // filter
+                } else switch (TYPE) {
+                  case 4:
+                    return false;
+                  // every
 
-                    case 7:
-                      push.call(target, value);
-                    // filterOut
-                  }
+                  case 7:
+                    push.call(target, value);
+                  // filterOut
+                }
               }
             }
           }
