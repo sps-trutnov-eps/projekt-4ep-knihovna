@@ -1,0 +1,1 @@
+{"ast":null,"code":"export class Alert {\n  constructor(message, type) {\n    this.message = message;\n    this.type = type;\n  }\n}","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}
