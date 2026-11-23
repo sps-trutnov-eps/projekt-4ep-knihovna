@@ -6,7 +6,8 @@ import { AlertType } from '../alert-type';
 @Component({
     selector: 'app-alert-view',
     templateUrl: './alert-view.component.html',
-    styleUrls: ['./alert-view.component.scss']
+    styleUrls: ['./alert-view.component.scss'],
+    standalone: false
 })
 export class AlertViewComponent {
     get activeAlerts(): Alert[] {

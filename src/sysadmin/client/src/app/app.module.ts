@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { AppRoutingModule } from './routing/app-routing.module';
 import { AppComponent } from './pages/app/app.component';
@@ -19,8 +19,7 @@ export function createAppInitializer(appInitializeService: AppInitializeService)
     return async () => await appInitializeService.intialize();
 }
 
-@NgModule({
-    declarations: [
+@NgModule({ declarations: [
         AppComponent,
         UsersComponent,
         MainNavigationComponent,
@@ -28,14 +27,10 @@ export function createAppInitializer(appInitializeService: AppInitializeService)
         ConfirmDialogComponent,
         MainFooterComponent
     ],
-    imports: [
-        BrowserModule,
+    bootstrap: [AppComponent], imports: [BrowserModule,
         FormsModule,
         ReactiveFormsModule,
-        HttpClientModule,
-        AppRoutingModule
-    ],
-    providers: [
+        AppRoutingModule], providers: [
         {
             provide: HTTP_INTERCEPTORS,
             useClass: WithCredentialsHttpInterceptor,
@@ -66,11 +61,7 @@ export function createAppInitializer(appInitializeService: AppInitializeService)
         {
             provide: LIBRARIAN_MODULE_URL,
             useValue: "/knihovna/knihovnik"
-        }
-    ],
-    entryComponents: [
-        ConfirmDialogComponent
-    ],
-    bootstrap: [AppComponent]
-})
+        },
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }

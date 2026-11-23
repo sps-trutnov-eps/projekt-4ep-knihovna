@@ -3,7 +3,8 @@ import { Component, TemplateRef, ViewChild, ElementRef, AfterViewInit, Output, E
 @Component({
     selector: 'app-confirm-dialog',
     templateUrl: './confirm-dialog.component.html',
-    styleUrls: ['./confirm-dialog.component.scss']
+    styleUrls: ['./confirm-dialog.component.scss'],
+    standalone: false
 })
 export class ConfirmDialogComponent implements AfterViewInit {
     @Input()

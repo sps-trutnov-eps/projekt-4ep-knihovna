@@ -11,7 +11,8 @@ import { UserHasActiveBorrowsError } from 'src/app/core/users/user-has-active-bo
 @Component({
     selector: 'app-users',
     templateUrl: './users.component.html',
-    styleUrls: ['./users.component.scss']
+    styleUrls: ['./users.component.scss'],
+    standalone: false
 })
 export class UsersComponent implements OnInit, DoCheck {
     users: UserViewModel[];
