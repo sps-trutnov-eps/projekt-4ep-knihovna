@@ -10,7 +10,8 @@ export const LIBRARIAN_MODULE_URL = new InjectionToken<string>("Librarian module
 @Component({
     selector: 'app-main-navigation',
     templateUrl: './main-navigation.component.html',
-    styleUrls: ['./main-navigation.component.scss']
+    styleUrls: ['./main-navigation.component.scss'],
+    standalone: false
 })
 export class MainNavigationComponent {
     get signedUser(): User {
