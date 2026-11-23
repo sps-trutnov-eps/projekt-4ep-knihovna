@@ -68,9 +68,6 @@ export function createAppInitializer(appInitializeService: AppInitializeService)
             useValue: "/knihovna/knihovnik"
         }
     ],
-    entryComponents: [
-        ConfirmDialogComponent
-    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
