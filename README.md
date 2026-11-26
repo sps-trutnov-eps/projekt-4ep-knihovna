@@ -1,3 +1,5 @@
+> Žákovský projekt třídy 4.EP, školní rok 2019/20, SPŠ Trutnov. Projekt se už neudržuje.
+
 # Knihovna SPŠ Trutnov
 
 ## Konfigurace
